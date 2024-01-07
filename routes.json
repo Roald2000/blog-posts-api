@@ -1,0 +1,39 @@
+{
+  "base": {
+    "URL": "http://127.0.0.1:8800/api",
+    "routes": {
+      "posts": {
+        "/": {
+          "method": "GET",
+          "query": ["page", "limit", "order_by", "sort_by"],
+          "response": ["posts"]
+        },
+        "/find/:post_id": {
+          "method": "GET",
+          "params": "post_id",
+          "response": "post"
+        },
+        "/create": ["POST", ["auth:user_id", "post_topic", "post_description"]],
+        "/update/:post_id": [
+          "PUT",
+          ["post_id"],
+          ["auth:user_id", "post_topic", "post_description"]
+        ],
+        "/delete/:post_id": ["DELETE", ["post_id"]]
+      },
+      "comments": {
+        "/:post_id": ["GET", ["post_id"], ["post"]],
+        "/create": ["POST", ["auth:user_id", "post_id", "comment_content"]],
+        "/update/:post_id": [
+          "PUT",
+          ["auth:user_id", "post_id", "comment_content"]
+        ],
+        "/delete/:post_id": ["DELETE", ["post_id"]]
+      },
+      "auth": {
+        "/login": ["POST", ["username", "password"], ["token", "user"]],
+        "/register": ["POST", ["username", "password"]]
+      }
+    }
+  }
+}
